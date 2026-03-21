@@ -13,4 +13,31 @@ const searchList = document.getElementById("searchList");
 searchList.innerHTML = "";
 
 if (searches.length === 0) {
-  searchList
+  searchList.innerHTML = "<li>No searches yet</li>";
+} else {
+  searches.slice(-5).forEach(s => {
+    const li = document.createElement("li");
+    li.innerText = s;
+    searchList.appendChild(li);
+  });
+}
+
+// Show viewed movies (last 5)
+const viewList = document.getElementById("viewList");
+viewList.innerHTML = "";
+
+if (viewed.length === 0) {
+  viewList.innerHTML = "<li>No viewed movies yet</li>";
+} else {
+  viewed.slice(-5).forEach(v => {
+    const li = document.createElement("li");
+    li.innerText = v;
+    viewList.appendChild(li);
+  });
+}
+
+// Clear all data button
+function clearData() {
+  localStorage.clear();
+  location.reload();
+}
