@@ -61,7 +61,7 @@ function displayMovies(movies) {
 }
 
 // Favorites
-function XXX(movie) {
+function addToFavorites(movie) {
   let favs = JSON.parse(localStorage.getItem("favorites")) || [];
 
   if (!favs.find(m => m.id === movie.id)) {
@@ -71,7 +71,7 @@ function XXX(movie) {
   }
 }
 
-function YYY() {
+function showFavorites() {
   const favs = JSON.parse(localStorage.getItem("favorites")) || [];
   displayMovies(favs);
 }
