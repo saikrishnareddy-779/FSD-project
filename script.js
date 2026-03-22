@@ -49,6 +49,64 @@ function displayMovies(movies) {
     div.onclick = () => {
       localStorage.setItem("selectedMovie", JSON.stringify(movie));
 
-      let viewed
+      let viewed = JSON.parse(localStorage.getItem("viewed")) || [];
+      viewed.push(movie.title);
+      localStorage.setItem("viewed", JSON.stringify(viewed));
+
+      window.location.href = "details.html";
+    };
+
+    moviesDiv.appendChild(div);
+  });
+}
+
+// Favorites
+function XXX(movie) {
+  let favs = JSON.parse(localStorage.getItem("favorites")) || [];
+
+  if (!favs.find(m => m.id === movie.id)) {
+    favs.push(movie);
+    localStorage.setItem("favorites", JSON.stringify(favs));
+    alert("Added to favorites ❤️");
+  }
+}
+
+function YYY() {
+  const favs = JSON.parse(localStorage.getItem("favorites")) || [];
+  displayMovies(favs);
+}
+
+// Filters + Search
+searchInput.addEventListener("keyup", applyFilters);
+yearFilter.addEventListener("change", applyFilters);
+ratingFilter.addEventListener("change", applyFilters);
+
+async function applyFilters() {
+  const query = searchInput.value.trim();
+
+  let url = `${BASE_URL}/discover/movie?api_key=${API_KEY}`;
+
+  if (query.length > 2) {
+    url = `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query}`;
+
+    let searches = JSON.parse(localStorage.getItem("searches")) || [];
+    searches.push(query);
+    localStorage.setItem("searches", JSON.stringify(searches));
+  }
+
+  if (yearFilter.value) {
+    url += `&primary_release_year=${yearFilter.value}`;
+  }
+
+  const res = await fetch(url);
+  let movies = (await res.json()).results;
+
+  if (ratingFilter.value) {
+    movies = movies.filter(m => m.vote_average >= ratingFilter.value);
+  }
+
+  displayMovies(movies);
+}
+
 // Initial load
 getMovies();
